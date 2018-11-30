@@ -7,12 +7,20 @@ using UnityEngine;
 [InitializeOnLoad]
 public class PlayMakerUnnyNetEditorUtils
 {
+
     static PlayMakerUnnyNetEditorUtils()
     {
         Actions.AddCategoryIcon("UnnyNet",CategoryIcon);
+
+        if (!EditorApplication.isPlaying)
+        {
+            CreateGlobalEventIfNecessary();
+        }
     }
 
-    private static Texture _CategoryIcon = null;
+   static bool _eventadded;
+
+    static Texture _CategoryIcon = null;
     internal static Texture CategoryIcon
     {
         get
@@ -26,4 +34,15 @@ public class PlayMakerUnnyNetEditorUtils
             return _CategoryIcon;
         }
     }
+
+
+
+   static void CreateGlobalEventIfNecessary()
+    {
+        if (!_eventadded)
+        {
+            _eventadded = PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ONAUTHORIZED_EVENT);
+        }
+    }
+
 }
