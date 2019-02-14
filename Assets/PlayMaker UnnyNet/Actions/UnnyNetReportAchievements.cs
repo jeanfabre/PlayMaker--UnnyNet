@@ -5,17 +5,17 @@
 namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory("UnnyNet")]
-    [Tooltip("Report a score to a UnnyNet LeaderBoard")]
-    public class UnnyNetReportLeaderboard: FsmStateAction
+    [Tooltip("Report a progress to a UnnyNet achievement Id")]
+    public class UnnyNetReportAchievements : FsmStateAction
     {
-        [Tooltip("The Leaderboard Name")]
-        public FsmString leaderboardName;
+        [Tooltip("The achievement Id")]
+        public FsmInt achievementId;
 
-        [Tooltip("The Score")]
-        public FsmFloat score;
+        [Tooltip("The progress")]
+        public FsmInt progress;
 
-        [Tooltip("The Score as a string, must be a valid float")]
-        public FsmString scoreAsString;
+        [Tooltip("The progress as a string, must be a valid int")]
+        public FsmString progressAsString;
 
         [ActionSection("Result")]
         [Tooltip("true if report succeeded")]
@@ -33,13 +33,13 @@ namespace HutongGames.PlayMaker.Actions
         public FsmEvent errorEvent;
 
         bool _success;
-        float _score;
+        int _progress;
 
         public override void Reset()
         {
-            leaderboardName = null;
-            score = null;
-            scoreAsString = new FsmString() { UseVariable = true };
+            achievementId = null;
+            progress = null;
+            progressAsString = new FsmString() { UseVariable = true };
             success = null;
             errorMessage = null;
             errorEvent = null;
@@ -48,20 +48,20 @@ namespace HutongGames.PlayMaker.Actions
 
         public override void OnEnter()
         {
-            if (!string.IsNullOrEmpty(scoreAsString.Value))
+            if (!string.IsNullOrEmpty(progressAsString.Value))
             {
-                if (!float.TryParse(scoreAsString.Value, out _score))
+                if (!int.TryParse(progressAsString.Value, out _progress))
                 {
-                    LogError("Score as string failed to parse as a float");
+                    LogError("Progress as string failed to parse as a int");
                 }
             }else{
-                _score = score.Value;
+                _progress = progress.Value;
             }
 
-            UnnyNet.UnnyNet.ReportLeaderboards(leaderboardName.Value, _score, HandleReportLeaderboards);
+            UnnyNet.UnnyNet.ReportAchievements(achievementId.Value, _progress, HandleReportAchievemets);
         }
 
-        void HandleReportLeaderboards(string error)
+        void HandleReportAchievemets(string error)
         {
             if (!errorMessage.IsNone)
             {

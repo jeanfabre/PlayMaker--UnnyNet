@@ -1,4 +1,4 @@
-// (c) Copyright HutongGames, LLC 2010-2018. All rights reserved.
+// (c) Copyright HutongGames, LLC 2010-2019. All rights reserved.
 // Author jean@hutonggames.com
 // This code is licensed under the MIT Open source License
 
@@ -41,10 +41,18 @@ public class PlayMakerUnnyNetEditorUtils
 
    static void CreateGlobalEventIfNecessary()
     {
-        if (!_eventadded)
-        {
-            _eventadded = PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ONAUTHORIZED_EVENT);
-        }
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ON_AUTHORIZED_EVENT);
+
+
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_NAME_CHANGED_EVENT);
+
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_GUILD_NEW_EVENT);
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_GUILD_NEW_REQUEST_EVENT);
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_GUILD_RANKED_CHANGED_EVENT);
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_GUILD_NEW_REQUEST_EVENT);
+
+        PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_ACHIEVEMENT_COMPLETED_EVENT);
+
     }
 
 }

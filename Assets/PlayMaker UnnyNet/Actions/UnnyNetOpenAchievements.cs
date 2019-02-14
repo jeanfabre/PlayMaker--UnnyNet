@@ -5,12 +5,12 @@
 namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory("UnnyNet")]
-    [Tooltip("Opens UnnyNet")]
-    public class UnnyNetOpen : FsmStateAction
+    [Tooltip("Opens UnnyNet Achievements")]
+    public class UnnyNetOpenAchievements : FsmStateAction
     {
         public override void OnEnter()
         {
-            UnnyNet.UnnyNetBase.OpenUnnyNet();
+            UnnyNet.UnnyNet.OpenAchievements();
             Finish();
         }
     }

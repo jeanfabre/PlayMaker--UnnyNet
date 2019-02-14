@@ -1,4 +1,4 @@
-// (c) Copyright HutongGames, LLC 2010-2018. All rights reserved.
+// (c) Copyright HutongGames, LLC 2010-2019. All rights reserved.
 // Author jean@hutonggames.com
 // This code is licensed under the MIT Open source License
 
@@ -30,15 +30,17 @@ public class PlayMakerUnnyNetProxyInspector : Editor
     {
         // TODO: better help formating
         GUILayout.Space(2f);
-        GUILayout.Label("This proxy will broadcast One Playmaker event:");
-        GUILayout.Label(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ONAUTHORIZED_EVENT);
+        GUILayout.Label("This proxy will broadcast several Playmaker event:");
+        GUILayout.Space(2f);
+        GUILayout.Label(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ON_AUTHORIZED_EVENT);
         GUILayout.Label("Use UnnyNetGetPlayerInfos to get:");
-        GUILayout.Label("Email, Id, and status");
+        GUILayout.Label("Name, Email, Id, and status");
 
         if (Application.isPlaying)
         {
             GUILayout.Space(2f);
             EditorGUILayout.LabelField("Authorized", PlayMakerUnnyNetProxy.IsAuthorized.ToString());
+            EditorGUILayout.LabelField("Name", PlayMakerUnnyNetProxy.PlayerName);
             EditorGUILayout.LabelField("Id", PlayMakerUnnyNetProxy.PlayerId);
             EditorGUILayout.LabelField("Email", PlayMakerUnnyNetProxy.PlayerEmail);
         }

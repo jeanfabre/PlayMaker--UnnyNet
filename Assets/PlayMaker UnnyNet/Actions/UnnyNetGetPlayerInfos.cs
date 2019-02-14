@@ -1,4 +1,4 @@
-﻿// (c) Copyright HutongGames, LLC 2010-2018. All rights reserved.
+﻿// (c) Copyright HutongGames, LLC 2010-2019. All rights reserved.
 // Author jean@hutonggames.com
 // This code is licensed under the MIT Open source License
 
@@ -15,6 +15,10 @@ namespace HutongGames.PlayMaker.Actions
         [Tooltip("The Player Email. May not be set")]
         [UIHint(UIHint.Variable)]
         public FsmString playerEmail;
+
+        [Tooltip("The Player Name.")]
+        [UIHint(UIHint.Variable)]
+        public FsmString playerName;
 
 
         [ActionSection("Result")]
@@ -35,7 +39,8 @@ namespace HutongGames.PlayMaker.Actions
         {
             playerId = null;
             playerEmail = null;
-           
+            playerName = null;
+
             authorized = null;
             authorizedEvent = null;
             notAuthorizedEvent = null;
@@ -47,12 +52,16 @@ namespace HutongGames.PlayMaker.Actions
             {
                 playerId.Value = PlayMakerUnnyNetProxy.PlayerId;
             }
+
             if (!playerEmail.IsNone)
             {
                 playerEmail.Value = PlayMakerUnnyNetProxy.PlayerEmail;
             }
 
-          
+            if (!playerName.IsNone)
+            {
+                playerName.Value = PlayMakerUnnyNetProxy.PlayerName;
+            }
 
             if (!authorized.IsNone)
             {
