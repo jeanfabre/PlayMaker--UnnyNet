@@ -18,7 +18,6 @@ namespace HutongGames.PlayMaker.Actions
         [Tooltip("Event sent if the window opened")]
         public FsmEvent successEvent;
 
-
         public override void Reset()
         {
             errorMessage = null;
@@ -44,7 +43,6 @@ namespace HutongGames.PlayMaker.Actions
                 errorMessage.Value = error;
                 Fsm.Event(errorEvent);
             }
-
 
             Finish();
         }

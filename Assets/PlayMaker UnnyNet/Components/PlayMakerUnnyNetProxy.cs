@@ -16,6 +16,8 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
     private static string playerEmail = "";
     private static string playerName = "";
 
+    private static int achievementId = -1;
+
 #if UNITY_EDITOR
     // Declare the method signature of the delegate to call.
     // For a void method with no parameters you could just use System.Action.
@@ -35,14 +37,18 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
     }
 #endif
 
-    public const string UNNYNET_PLAYER_ON_AUTHORIZED_EVENT       = "UNNYNET / PLAYER / ON AUTHORIZED";
+    public const string UNNYNET_PLAYER_ON_AUTHORIZED_EVENT      = "UNNYNET / PLAYER / ON AUTHORIZED";
     public const string UNNYNET_PLAYER_NAME_CHANGED_EVENT       = "UNNYNET / PLAYER / ON NAME CHANGED";
     public const string UNNYNET_ACHIEVEMENT_COMPLETED_EVENT     = "UNNYNET / ACHIEVEMENT / ON COMPLETED";
     public const string UNNYNET_GUILD_NEW_REQUEST_EVENT         = "UNNYNET / GUILD / ON NEW REQUEST";
     public const string UNNYNET_GUILD_NEW_EVENT                 = "UNNYNET / GUILD / ON NEW";
     public const string UNNYNET_GUILD_RANKED_CHANGED_EVENT      = "UNNYNET / GUILD / ON RANKED CHANGED";
 
-    public string GuildRequestRejectionMessage = string.Empty;
+    /// <summary>
+    /// The guild request rejection message. If null or empty, New guild request will be acknoledged,
+    /// else they will fail mentioning the rejection message.
+    /// </summary>
+    public static string GuildRequestRejectionMessage = string.Empty;
 
     void OnEnable()
     {
@@ -52,7 +58,6 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
         UnnyNet.UnnyNetBase.m_OnNewGuildRequest += OnNewGuildRequest;
         UnnyNet.UnnyNetBase.m_OnNewGuild += OnNewGuild;
         UnnyNet.UnnyNetBase.m_OnRankChanged += OnRankChanged;
-
     }
 
     void OnDisable()
@@ -60,11 +65,10 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
         UnnyNet.UnnyNetBase.m_OnPlayerAuthorized -= OnPlayerAuthorized;
         UnnyNet.UnnyNetBase.m_OnPlayerNameChanged -= OnPlayerNameChanged;
         UnnyNet.UnnyNetBase.m_OnAchievementCompleted += OnAchievementCompleted;
+        UnnyNet.UnnyNetBase.m_OnNewGuildRequest -= OnNewGuildRequest;
         UnnyNet.UnnyNetBase.m_OnNewGuild -= OnNewGuild;
         UnnyNet.UnnyNetBase.m_OnRankChanged -= OnRankChanged;
     }
-
-
 
     void OnPlayerAuthorized(Dictionary<string, string> prms)
     {
@@ -75,16 +79,13 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
 
         prms.TryGetValue("email", out playerEmail);
 
-
         prms.TryGetValue("name", out playerName);
-        //foreach(KeyValuePair<string,string> data in obj)
-        //{
-        //    Debug.Log(data.Key + ":" + data.Value);
-        //}
 
         #if UNITY_EDITOR
             Repaint();
         #endif
+
+        Fsm.EventData.StringData = playerId;
 
         SetEventProperties.properties.Clear();
         SetEventProperties.properties = prms.ToDictionary(x => x.Key, x => x.Value as object);
@@ -101,7 +102,9 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
         #endif
 
         SetEventProperties.properties.Clear();
-        SetEventProperties.properties["Name"] = newName;
+        SetEventProperties.properties["name"] = newName;
+
+        Fsm.EventData.StringData = newName;
 
         PlayMakerFSM.BroadcastEvent(UNNYNET_PLAYER_NAME_CHANGED_EVENT);
     }
@@ -111,6 +114,15 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
         SetEventProperties.properties.Clear();
         SetEventProperties.properties = prms.ToDictionary(x => x.Key, x => x.Value as object);
 
+        string _ach_id;
+        if (prms.TryGetValue("ach_id", out _ach_id))
+        {
+            int.TryParse(_ach_id, out achievementId);
+        }
+
+        Fsm.EventData.IntData = achievementId;
+        Fsm.EventData.StringData = _ach_id;
+
         PlayMakerFSM.BroadcastEvent(UNNYNET_ACHIEVEMENT_COMPLETED_EVENT);
     }
 
@@ -118,6 +130,11 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
     {
         SetEventProperties.properties.Clear();
         SetEventProperties.properties = prms.ToDictionary(x => x.Key, x => x.Value as object);
+
+        if (!string.IsNullOrEmpty(GuildRequestRejectionMessage))
+        {
+            SetEventProperties.properties.Add("rejection_message", GuildRequestRejectionMessage);
+        }
 
         PlayMakerFSM.BroadcastEvent(UNNYNET_GUILD_NEW_REQUEST_EVENT);
 
@@ -139,7 +156,6 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
 
         PlayMakerFSM.BroadcastEvent(UNNYNET_GUILD_RANKED_CHANGED_EVENT);
     }
-
 
     public static bool IsAuthorized
     {
@@ -170,6 +186,14 @@ public class PlayMakerUnnyNetProxy : MonoBehaviour
         get
         {
             return playerName;
+        }
+    }
+
+    public static int AchievementId
+    {
+        get
+        {
+            return achievementId;
         }
     }
 }

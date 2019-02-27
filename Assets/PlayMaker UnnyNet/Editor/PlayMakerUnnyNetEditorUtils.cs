@@ -14,13 +14,13 @@ public class PlayMakerUnnyNetEditorUtils
     {
         Actions.AddCategoryIcon("UnnyNet",CategoryIcon);
 
-        if (!EditorApplication.isPlaying)
+        #if UNITY_EDITOR
+        if (!EditorApplication.isPlayingOrWillChangePlaymode)
         {
             CreateGlobalEventIfNecessary();
         }
+        #endif
     }
-
-   static bool _eventadded;
 
     static Texture _CategoryIcon = null;
     internal static Texture CategoryIcon
@@ -38,11 +38,10 @@ public class PlayMakerUnnyNetEditorUtils
     }
 
 
-
    static void CreateGlobalEventIfNecessary()
     {
+      //  Debug.Log("Create global events If needed for UnnyNet");
         PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_ON_AUTHORIZED_EVENT);
-
 
         PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_PLAYER_NAME_CHANGED_EVENT);
 
@@ -52,7 +51,5 @@ public class PlayMakerUnnyNetEditorUtils
         PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_GUILD_NEW_REQUEST_EVENT);
 
         PlayMakerUtils.CreateIfNeededGlobalEvent(PlayMakerUnnyNetProxy.UNNYNET_ACHIEVEMENT_COMPLETED_EVENT);
-
     }
-
 }

@@ -37,7 +37,6 @@ namespace HutongGames.PlayMaker.Actions
             experience = 500;
         }
 
-
         public override void OnEnter()
         {
             if (!string.IsNullOrEmpty(experienceAsString.Value))
@@ -53,9 +52,7 @@ namespace HutongGames.PlayMaker.Actions
             }
 
             UnnyNet.UnnyNet.AddGuildExperience(_experience, AddGuildCallback);
-
         }
-
 
         void AddGuildCallback(string error)
         {
@@ -70,7 +67,6 @@ namespace HutongGames.PlayMaker.Actions
                 errorMessage.Value = error;
                 Fsm.Event(errorEvent);
             }
-
 
             Finish();
         }
