@@ -6,7 +6,7 @@ namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory("UnnyNet")]
     [Tooltip("Report a score to a UnnyNet LeaderBoard")]
-    public class UnnyNetReportLeaderboard: FsmStateAction
+    public class UnnyNetReportLeaderboard: UnnyNetBaseAction
     {
         [Tooltip("The Leaderboard Name")]
         public FsmString leaderboardName;
@@ -22,32 +22,19 @@ namespace HutongGames.PlayMaker.Actions
         [UIHint(UIHint.Variable)]
         public FsmBool success;
 
-        [Tooltip("The error message if report failed")]
-        [UIHint(UIHint.Variable)]
-        public FsmString errorMessage;
-
-        [Tooltip("event sent if report failed")]
-        public FsmEvent successEvent;
-
-        [Tooltip("event sent if report succeeded")]
-        public FsmEvent errorEvent;
-
-        bool _success;
-        float _score;
-
         public override void Reset()
         {
+            base.Reset();
             leaderboardName = null;
             score = null;
             scoreAsString = new FsmString() { UseVariable = true };
             success = null;
-            errorMessage = null;
-            errorEvent = null;
-            successEvent = null;
         }
 
         public override void OnEnter()
         {
+            float _score;
+
             if (!string.IsNullOrEmpty(scoreAsString.Value))
             {
                 if (!float.TryParse(scoreAsString.Value, out _score))
@@ -58,37 +45,7 @@ namespace HutongGames.PlayMaker.Actions
                 _score = score.Value;
             }
 
-            UnnyNet.UnnyNet.ReportLeaderboards(leaderboardName.Value, _score, HandleReportLeaderboards);
-        }
-
-        void HandleReportLeaderboards(string error)
-        {
-            if (!errorMessage.IsNone)
-            {
-                errorMessage.Value = error;
-            }
-
-            _success = string.IsNullOrEmpty(error);
-
-            if (!success.IsNone)
-            {
-                success.Value = _success;
-            }
-
-            if (_success)
-            {
-                if (successEvent!=null)
-                {
-                    Fsm.Event(successEvent);
-                }
-            }else{
-                if (errorEvent != null)
-                {
-                    Fsm.Event(errorEvent);
-                }
-            }
-
-            Finish();
+            UnnyNet.UnnyNet.ReportLeaderboards(leaderboardName.Value, _score, BaseCallback);
         }
     }
 }

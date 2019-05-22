@@ -8,7 +8,7 @@ namespace HutongGames.PlayMaker.Actions
 {
     [ActionCategory("UnnyNet")]
     [Tooltip("Report a score to a UnnyNet LeaderBoard")]
-    public class UnnyNetSendMessageToChannel : FsmStateAction
+    public class UnnyNetSendMessageToChannel : UnnyNetBaseAction
     {
         [Tooltip("The channel Name")]
         public FsmString channelName;
@@ -21,61 +21,17 @@ namespace HutongGames.PlayMaker.Actions
         [UIHint(UIHint.Variable)]
         public FsmBool success;
 
-        [Tooltip("The error message if message failed")]
-        [UIHint(UIHint.Variable)]
-        public FsmString errorMessage;
-
-        [Tooltip("event sent if message failed")]
-        public FsmEvent successEvent;
-
-        [Tooltip("event sent if message succeeded")]
-        public FsmEvent errorEvent;
-
-        bool _success;
-
         public override void Reset()
         {
+            base.Reset();
             channelName = null;
             message = null;
             success = null;
-            errorMessage = null;
-            errorEvent = null;
-            successEvent = null;
         }
 
         public override void OnEnter()
         {
-            UnnyNet.UnnyNet.SendMessageToChannel(channelName.Value, message.Value, HandleSendMessage);
-        }
-
-        void HandleSendMessage(string error)
-        {
-            if (!errorMessage.IsNone)
-            {
-                errorMessage.Value = error;
-            }
-
-            _success = string.IsNullOrEmpty(error);
-
-            if (!success.IsNone)
-            {
-                success.Value = _success;
-            }
-
-            if (_success)
-            {
-                if (successEvent!=null)
-                {
-                    Fsm.Event(successEvent);
-                }
-            }else{
-                if (errorEvent != null)
-                {
-                    Fsm.Event(errorEvent);
-                }
-            }
-
-            Finish();
+            UnnyNet.UnnyNet.SendMessageToChannel(channelName.Value, message.Value, BaseCallback);
         }
     }
 }
