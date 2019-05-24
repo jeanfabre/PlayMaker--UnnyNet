@@ -31,10 +31,12 @@ MonoBehaviour:
   version: 1.0
   keyWords: Leaderboard chat game saas
   packageName: UnnyNet
-  targetDirectory: 
+  targetDirectory: /Users/jeanfabre/Documents/Work/Unity/PlayMaker/Ecosystem/Repositories/PlayMakerCustomActions_U2018/PlayMaker/Ecosystem/Custom
+    Packages/UnnyNet
   targetRepository: 7
   categoryString: UnnyNet
-  targetPackageTextFile: 
+  targetPackageTextFile: /Users/jeanfabre/Documents/Work/Unity/PlayMaker/Ecosystem/Repositories/PlayMakerCustomActions_U2018/PlayMaker/Ecosystem/Custom
+    Packages/UnnyNet/UnnyNet.package.txt
   packagetypeselection:
   - ActionPackage
   - SamplePackage
@@ -55,7 +57,7 @@ MonoBehaviour:
   - Asset Path
   - Menu
   Pingtypeselected: 1
-  uMinVersionSelected: 13
+  uMinVersionSelected: 14
   pmMinVersionSelected: 7
   categoryList:
   - API
