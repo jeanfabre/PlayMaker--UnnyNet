@@ -3078,7 +3078,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / PLAYER / ON AUTHORIZED
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: get infos
       linkStyle: 0
       linkConstraint: 0
@@ -3086,7 +3086,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / PLAYER / ON NAME CHANGED
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: Get Name
       linkStyle: 0
       linkConstraint: 0
@@ -3369,7 +3369,7 @@ Transform:
   - {fileID: 519420032}
   - {fileID: 1445007236}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &511965682
 GameObject:
@@ -8357,13 +8357,21 @@ MonoBehaviour:
       position:
         serializedVersion: 2
         x: 224
-        y: 128
+        y: 112
         width: 127
-        height: 16
+        height: 32
       isBreakpoint: 0
       isSequence: 0
       hideUnused: 0
-      transitions: []
+      transitions:
+      - fsmEvent:
+          name: FINISHED
+          isSystemEvent: 1
+          isGlobal: 0
+        toState: Watch button
+        linkStyle: 0
+        linkConstraint: 0
+        colorIndex: 0
       actionData:
         actionNames:
         - HutongGames.PlayMaker.Actions.UnnyNetOpen
@@ -8406,6 +8414,9 @@ MonoBehaviour:
         paramDataPos: 
         paramByteDataSize: 
     events:
+    - name: FINISHED
+      isSystemEvent: 1
+      isGlobal: 0
     - name: OPEN
       isSystemEvent: 0
       isGlobal: 0
@@ -10649,7 +10660,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / ACHIEVEMENT / ON COMPLETED
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: get data
       linkStyle: 0
       linkConstraint: 0
@@ -11351,7 +11362,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / GUILD / ON RANKED CHANGED
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: 'Get Data   '
       linkStyle: 0
       linkConstraint: 0
@@ -11359,7 +11370,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / GUILD / ON NEW REQUEST
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: 'Get Data  '
       linkStyle: 0
       linkConstraint: 0
@@ -11367,7 +11378,7 @@ MonoBehaviour:
     - fsmEvent:
         name: UNNYNET / GUILD / ON NEW
         isSystemEvent: 0
-        isGlobal: 1
+        isGlobal: 0
       toState: Get Data
       linkStyle: 0
       linkConstraint: 0
